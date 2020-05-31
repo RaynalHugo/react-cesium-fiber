@@ -1,6 +1,12 @@
+// @ts-nocheck
 import ReactReconciler from "react-reconciler";
 import { upperFirst } from "lodash/fp";
 import * as Cesium from "cesium";
+
+const hasSetter = (proto, key) => (
+  console.log(key, Object.getOwnPropertyDescriptor(proto, key)?.set != null),
+  Object.getOwnPropertyDescriptor(proto, key)?.set != null
+);
 
 const reconciler = ReactReconciler({
   supportsMutation: true,
@@ -8,6 +14,44 @@ const reconciler = ReactReconciler({
   getChildHostContext() {},
   shouldSetTextContent() {
     return false;
+  },
+  prepareUpdate(
+    instance,
+    type,
+    oldProps: object,
+    newProps: object,
+    rootContainerInstance,
+    host
+  ) {
+    // console.log(oldProps, newProps);
+    const oldKeys = Object.keys(oldProps);
+    const newKeys = Object.keys(newProps);
+
+    // keys have same length
+    if (oldKeys.length !== newKeys.length) {
+      return true;
+    } // keys are the same
+    else if (oldKeys.some((value, index) => newKeys[index] !== value)) {
+      return true;
+    } else {
+      return oldKeys
+        .filter((key) => key !== "children")
+        .some((key) => oldProps[key] !== newProps[key]);
+    }
+  },
+
+  commitUpdate(instance, updatePayload, type, oldProps, newProps) {
+    const { cesiumObject } = instance;
+
+    const { children, args, ...props } = newProps;
+
+    const proto = Object.getPrototypeOf(cesiumObject);
+
+    Object.entries(props)
+      .filter(([key]) => hasSetter(proto, key))
+      .forEach(([key, value]) => {
+        cesiumObject[key] = value;
+      });
   },
   prepareForCommit() {},
   resetAfterCommit() {},
@@ -21,43 +65,84 @@ const reconciler = ReactReconciler({
     internalInstanceHandle
   ) {
     const propName = upperFirst(type);
-    // console.log(propName);
-    // console.log(props);
+    console.log("propName:", propName);
 
     if (propName === "Viewer") {
-      // @ts-ignore
-      return new Cesium[propName](rootContainerInstance, props);
+      const cesiumObject = new Cesium[propName](
+        rootContainerInstance,
+        ...(props.args || [])
+      );
+      const proto = Object.getPrototypeOf(cesiumObject);
+
+      // console.log(
+      //   "homebutton",
+      //   hasSetter(proto, "homeButton"),
+      //   hasSetter(proto, "resolutionScale"),
+      //   Object.getOwnPropertyDescriptor(proto, "resolutionScale")
+      // );
+
+      Object.entries(props)
+        .filter(([key]) => hasSetter(proto, key))
+        .forEach(([key, value]) => {
+          cesiumObject[key] = value;
+        });
+
+      return {
+        cesiumObject,
+      };
     } else {
-      // @ts-ignore
-      const returned = new Cesium[propName](props);
-      // console.log(returned);
-      return returned;
+      const cesiumObject = new Cesium[propName](...(props.args || []));
+      const proto = Object.getPrototypeOf(cesiumObject);
+
+      console.log(
+        Object.entries(props)
+          .filter(([key]) => hasSetter(proto, key))
+          .map(([key, value]) => {
+            cesiumObject[key] = value;
+          })
+      );
+
+      return { cesiumObject, attach: props.attach };
     }
   },
   appendChild(...args) {
     // console.log("appendChild");
     // console.log(args);
   },
-  appendInitialChild(container, child) {
-    console.log("appendInitialChild");
+  appendInitialChild(
+    { cesiumObject: container },
+    { cesiumObject: child, attach }
+  ) {
+    console.log("\nappendInitialChild");
 
-    // @ts-ignore
     const containerType = container.constructor.name;
+    const childType = child.constructor.name;
 
-    if (containerType === "Entity") {
-      console.log(containerType);
-      // @ts-ignore
-      container["box"] = child;
-    } else {
-      console.log(containerType);
-      console.log(child);
-      // @ts-ignore
-      container.entities.add(child);
+    switch (containerType) {
+      case "Entity":
+        container[attach] = child;
+        break;
+
+      case "CustomDataSource":
+      case "Viewer":
+        switch (childType) {
+          case "Entity":
+            container.entities.add(child);
+            break;
+
+          case "CustomDataSource":
+            container.dataSources.add(child);
+            break;
+
+          default:
+            throw new Error("Unsupported children");
+        }
+
+        break;
+
+      default:
+        throw new Error("Unsupported container");
     }
-
-    //
-
-    //@ts-ignore
 
     // console.log(args);
   },
@@ -65,8 +150,8 @@ const reconciler = ReactReconciler({
     // console.log("appendChildToContainer");
     // console.log(args);
   },
-  // @ts-ignore
   finalizeInitialChildren() {},
+  removeChildFromContainer() {},
 });
 
 export function render(what: string, where: string) {
