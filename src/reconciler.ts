@@ -1,6 +1,6 @@
 import ReactReconciler from "react-reconciler";
 import { upperFirst } from "lodash/fp";
-import Cesium from "cesium";
+import * as Cesium from "cesium";
 
 const reconciler = ReactReconciler({
   supportsMutation: true,
@@ -13,20 +13,60 @@ const reconciler = ReactReconciler({
   resetAfterCommit() {},
 
   createTextInstance() {},
-  createInstance(...props) {
-    console.log(props);
-    const propName = upperFirst(props[0]);
-    console.log(propName);
-    console.log(Cesium);
-    // console.log(Cesium[propName]);
-    // return new Cesium[propName]();
-    // new Cesium.Viewer(container, options)
+  createInstance(
+    type: string,
+    props,
+    rootContainerInstance,
+    getChildHostContext,
+    internalInstanceHandle
+  ) {
+    const propName = upperFirst(type);
+    // console.log(propName);
+    // console.log(props);
+
+    if (propName === "Viewer") {
+      // @ts-ignore
+      return new Cesium[propName](rootContainerInstance, props);
+    } else {
+      // @ts-ignore
+      const returned = new Cesium[propName](props);
+      // console.log(returned);
+      return returned;
+    }
   },
-  appendChild() {},
-  appendInitialChild() {},
+  appendChild(...args) {
+    // console.log("appendChild");
+    // console.log(args);
+  },
+  appendInitialChild(container, child) {
+    console.log("appendInitialChild");
+
+    // @ts-ignore
+    const containerType = container.constructor.name;
+
+    if (containerType === "Entity") {
+      console.log(containerType);
+      // @ts-ignore
+      container["box"] = child;
+    } else {
+      console.log(containerType);
+      console.log(child);
+      // @ts-ignore
+      container.entities.add(child);
+    }
+
+    //
+
+    //@ts-ignore
+
+    // console.log(args);
+  },
+  appendChildToContainer(...args) {
+    // console.log("appendChildToContainer");
+    // console.log(args);
+  },
   // @ts-ignore
   finalizeInitialChildren() {},
-  appendChildToContainer() {}
 });
 
 export function render(what: string, where: string) {

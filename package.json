@@ -14,14 +14,14 @@
     "cesium": "1.69.0",
     "craco-cesium": "1.2.0",
     "lodash": "4.17.15",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
     "react-reconciler": "0.25.1",
-    "react-scripts": "3.3.0"
+    "react-scripts": "3.4.1"
   },
   "devDependencies": {
-    "@types/react": "16.9.19",
-    "@types/react-dom": "16.9.5",
+    "@types/react": "16.9.35",
+    "@types/react-dom": "16.9.8",
     "typescript": "3.7.5"
   },
   "scripts": {
@@ -30,5 +30,10 @@
     "test": "craco test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "browserslist": [">0.2%", "not dead", "not ie <= 11", "not op_mini all"]
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
