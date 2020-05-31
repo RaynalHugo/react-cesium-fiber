@@ -1,0 +1,34 @@
+{
+  "name": "react-cesium-fiber",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "main": "src/index.tsx",
+  "dependencies": {
+    "@craco/craco": "5.6.4",
+    "@types/cesium": "1.67.10",
+    "@types/lodash": "4.14.154",
+    "@types/react": "16.9.35",
+    "@types/react-dom": "16.9.8",
+    "@types/react-reconciler": "0.18.0",
+    "cesium": "1.69.0",
+    "craco-cesium": "1.2.0",
+    "lodash": "4.17.15",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-reconciler": "0.25.1",
+    "react-scripts": "3.3.0"
+  },
+  "devDependencies": {
+    "@types/react": "16.9.19",
+    "@types/react-dom": "16.9.5",
+    "typescript": "3.7.5"
+  },
+  "scripts": {
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "browserslist": [">0.2%", "not dead", "not ie <= 11", "not op_mini all"]
+}
