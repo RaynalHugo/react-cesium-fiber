@@ -3,10 +3,8 @@ import ReactReconciler from "react-reconciler";
 import { upperFirst } from "lodash/fp";
 import * as Cesium from "cesium";
 
-const hasSetter = (proto, key) => (
-  console.log(key, Object.getOwnPropertyDescriptor(proto, key)?.set != null),
-  Object.getOwnPropertyDescriptor(proto, key)?.set != null
-);
+const hasSetter = (proto, key) =>
+  Object.getOwnPropertyDescriptor(proto, key)?.set != null;
 
 const reconciler = ReactReconciler({
   supportsMutation: true,
@@ -64,46 +62,20 @@ const reconciler = ReactReconciler({
     getChildHostContext,
     internalInstanceHandle
   ) {
+    const { args = [], ref, attach, children, ...remainingProps } = props;
+
     const propName = upperFirst(type);
-    console.log("propName:", propName);
 
-    if (propName === "Viewer") {
-      const cesiumObject = new Cesium[propName](
-        rootContainerInstance,
-        ...(props.args || [])
-      );
-      const proto = Object.getPrototypeOf(cesiumObject);
+    const cesiumObject = new Cesium[propName](...args);
+    const proto = Object.getPrototypeOf(cesiumObject);
 
-      // console.log(
-      //   "homebutton",
-      //   hasSetter(proto, "homeButton"),
-      //   hasSetter(proto, "resolutionScale"),
-      //   Object.getOwnPropertyDescriptor(proto, "resolutionScale")
-      // );
+    Object.entries(remainingProps)
+      .filter(([key]) => hasSetter(proto, key))
+      .forEach(([key, value]) => {
+        cesiumObject[key] = value;
+      });
 
-      Object.entries(props)
-        .filter(([key]) => hasSetter(proto, key))
-        .forEach(([key, value]) => {
-          cesiumObject[key] = value;
-        });
-
-      return {
-        cesiumObject,
-      };
-    } else {
-      const cesiumObject = new Cesium[propName](...(props.args || []));
-      const proto = Object.getPrototypeOf(cesiumObject);
-
-      console.log(
-        Object.entries(props)
-          .filter(([key]) => hasSetter(proto, key))
-          .map(([key, value]) => {
-            cesiumObject[key] = value;
-          })
-      );
-
-      return { cesiumObject, attach: props.attach };
-    }
+    return { cesiumObject, attach: attach };
   },
   appendChild(...args) {
     // console.log("appendChild");
@@ -124,12 +96,14 @@ const reconciler = ReactReconciler({
         break;
 
       case "CustomDataSource":
+      case "GeoJsonDataSource":
       case "Viewer":
         switch (childType) {
           case "Entity":
             container.entities.add(child);
             break;
 
+          case "GeoJsonDataSource":
           case "CustomDataSource":
             container.dataSources.add(child);
             break;
@@ -152,10 +126,13 @@ const reconciler = ReactReconciler({
   },
   finalizeInitialChildren() {},
   removeChildFromContainer() {},
+  getPublicInstance(instance) {
+    return instance.cesiumObject;
+  },
 });
 
-export function render(what: string, where: string) {
-  console.log(what, where);
+export function render(what: React.ReactNode, where: HTMLElement) {
+  // console.log(what, where);
   const container = reconciler.createContainer(where, false, false);
   reconciler.updateContainer(what, container, null, () =>
     console.log("first update")
