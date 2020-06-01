@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import "./styles.css";
 import { Cartesian3, Color, GeoJsonDataSource } from "cesium";
 
@@ -12,6 +12,47 @@ const pos3 = Cartesian3.fromDegrees(-114.0, 20.0, 300000.0);
 const dimensions = new Cartesian3(400000.0, 300000.0, 500000.0);
 
 const greenWithOpacity = Color.GREEN.withAlpha(0.5);
+
+const Plane = () => {
+  const actualPosition = useRef([-114.0, 30.0, 1500000.0]);
+
+  const samples = useMemo(() => new Cesium.SampledPositionProperty(), []);
+
+  samples.addSample(
+    new Cesium.JulianDate.now(),
+    new Cartesian3.fromDegrees(...actualPosition.current)
+  );
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // console.log(new Cesium.JulianDate.now());
+      samples.addSample(
+        Cesium.JulianDate.now(),
+        Cartesian3.fromDegrees(...actualPosition.current)
+      );
+
+      actualPosition.current = [
+        actualPosition.current[0] + 10,
+        actualPosition.current[1],
+        actualPosition.current[2],
+      ];
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
+
+  console.log("render");
+
+  return (
+    <entity position={samples}>
+      <modelGraphics
+        attach="model"
+        scale={50000}
+        material={Color.RED}
+        uri={process.env.PUBLIC_URL + "./plane.glb"}
+      />
+    </entity>
+  );
+};
 
 export default function App() {
   // @ts-ignore
@@ -36,7 +77,7 @@ export default function App() {
     <>
       <Viewer
         style={{ width: "100vw", height: "100vh", boxSizing: "border-box" }}
-        args={[{ homeButton: true, resolutionScale: 2 }]}
+        args={[{ homeButton: true, resolutionScale: 2, shouldAnimate: true }]}
         homeButton={false}
         // resolutionScale={1}
       >
@@ -73,14 +114,7 @@ export default function App() {
               outlineColor={Color.DARK_GREEN}
             />
           </entity>
-          <entity position={pos2}>
-            <modelGraphics
-              attach="model"
-              scale={5000}
-              material={Color.RED}
-              uri={process.env.PUBLIC_URL + "./plane.glb"}
-            />
-          </entity>
+          <Plane position={pos2} />
         </customDataSource>
         <geoJsonDataSource ref={geojsonRef} />
       </Viewer>
