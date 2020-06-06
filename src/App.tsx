@@ -8,6 +8,7 @@ import React, {
 } from "react";
 import "./styles.css";
 import { Cartesian3, Color } from "cesium";
+import * as Cesium from "cesium";
 
 import { Viewer } from "./viewer";
 import { useViewer } from "./context";
@@ -31,28 +32,6 @@ const Plane = () => {
 
   samples.backwardExtrapolationType = Cesium.ExtrapolationType.EXTRAPOLATE;
   samples.forwardExtrapolationType = Cesium.ExtrapolationType.EXTRAPOLATE;
-
-  // samples.addSample(
-  //   new Cesium.JulianDate.now(),
-  //   new Cartesian3.fromDegrees(...actualPosition.current)
-  // );
-
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     // console.log(new Cesium.JulianDate.now());
-  //     samples.addSample(
-  //       Cesium.JulianDate.now(),
-  //       Cartesian3.fromDegrees(...actualPosition.current)
-  //     );
-
-  //     actualPosition.current = [
-  //       actualPosition.current[0] + 10,
-  //       actualPosition.current[1],
-  //       actualPosition.current[2],
-  //     ];
-  //   }, 2000);
-  //   return () => clearInterval(interval);
-  // }, []);
 
   const update = useCallback((scene, time) => {
     const increment = Cesium.JulianDate.secondsDifference(
@@ -190,7 +169,6 @@ export default function App() {
 
 const ZoomTo = () => {
   const viewer = useViewer();
-  console.log("viewer", viewer);
 
   useEffect(() => {
     viewer &&

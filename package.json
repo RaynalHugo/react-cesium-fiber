@@ -36,15 +36,15 @@
     "react-hot-loader": "4.12.21",
     "react-scripts": "3.4.1",
     "typescript": "3.7.5",
-    "webpack": "4.43.0"
+    "webpack": "4.42.0"
   },
   "scripts": {
     "start": "craco start",
     "build": "craco build",
     "test": "craco test --env=jsdom",
     "eject": "react-scripts eject",
-    "storybook": "start-storybook -p 9009 -s public",
-    "build-storybook": "build-storybook -s public"
+    "storybook": "start-storybook -p 9009 -s ./public",
+    "build-storybook": "build-storybook -s ./public"
   },
   "browserslist": [
     ">0.2%",

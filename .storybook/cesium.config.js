@@ -86,13 +86,16 @@ function webpack(
           from: path.join(cesiumSource, "Widgets"),
           to: "cesium/Widgets",
         },
+        {
+          from: path.join(cesiumSource, "ThirdParty"),
+          to: "cesium/ThirdParty",
+        },
       ],
     }),
 
     new webpackModule.DefinePlugin({
       CESIUM_BASE_URL: JSON.stringify("cesium"),
-    }),
-    new HtmlWebpackTagsPlugin({ tags: ["Widgets/widgets.css"], append: false })
+    })
   );
 
   webpackConfig.output = {

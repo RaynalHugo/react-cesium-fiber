@@ -1,8 +1,7 @@
 import React from "react";
+import { Viewer } from "../viewer";
 
 require("cesium/Widgets/widgets.css");
-
-import { Viewer } from "../viewer";
 
 export default {
   title: "Viewer",
@@ -14,5 +13,5 @@ export const Basic = () => {
 };
 
 export const LowResolution = () => {
-  return <Viewer resolutionScale={0.5} />;
+  return <Viewer resolutionScale={0.2} />;
 };
