@@ -9,7 +9,7 @@ export const Viewer = ({
   args = [],
   style = {},
   ...viewerProps
-}: React.PropsWithChildren<{ args: any[]; style: React.CSSProperties }>) => {
+}: React.PropsWithChildren<{ args?: any[]; style?: React.CSSProperties }>) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const viewerRef = useRef<HTMLDivElement>(null);
 

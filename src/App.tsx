@@ -144,7 +144,7 @@ export default function App() {
           <boxGraphics
             attach="box"
             dimensions={dimensions}
-            material={Color.BLUE}
+            material={Color.RED}
           />
         </entity>
         {/* <entity position={pos2}>
@@ -167,7 +167,7 @@ export default function App() {
         </entity>
       </customDataSource>
       <Plane position={pos2} />
-      <geoJsonDataSource ref={geojsonRef} />
+      <geoJsonDataSource ref={geojsonRef} clampToGround />
       <cesium3DTileset
         args={[
           {
