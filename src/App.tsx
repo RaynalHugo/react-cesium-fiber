@@ -9,7 +9,8 @@ import React, {
 import "./styles.css";
 import { Cartesian3, Color } from "cesium";
 
-import { Viewer, useViewer } from "./viewer";
+import { Viewer } from "./viewer";
+import { useViewer } from "./context";
 
 import { usePreUpdate } from "./hooks";
 
@@ -120,7 +121,14 @@ export default function App() {
   return (
     <Viewer
       style={{ width: "100vw", height: "100vh", boxSizing: "border-box" }}
-      args={[{ homeButton: true, resolutionScale: 2, shouldAnimate: true }]}
+      args={[
+        {
+          homeButton: true,
+          resolutionScale: 1,
+          shouldAnimate: true,
+          terrainProvider: Cesium.createWorldTerrain(),
+        },
+      ]}
       homeButton={false}
       // resolutionScale={1}
     >
@@ -160,6 +168,48 @@ export default function App() {
       </customDataSource>
       <Plane position={pos2} />
       <geoJsonDataSource ref={geojsonRef} />
+      <cesium3DTileset
+        args={[
+          {
+            url: Cesium.IonResource.fromAssetId(16421),
+          },
+        ]}>
+        <cesium3DTileStyle
+          attach={"style"}
+          args={[
+            {
+              pointSize: "3",
+            },
+          ]}
+        />
+      </cesium3DTileset>
+      <ZoomTo />
     </Viewer>
   );
 }
+
+const ZoomTo = () => {
+  const viewer = useViewer();
+  console.log("viewer", viewer);
+
+  useEffect(() => {
+    viewer &&
+      setTimeout(
+        viewer.scene.camera.setView({
+          destination: new Cesium.Cartesian3(
+            4401744.644145314,
+            225051.41078911052,
+            4595420.374784433
+          ),
+          orientation: new Cesium.HeadingPitchRoll(
+            5.646733805039757,
+            -0.276607153839886,
+            6.281110875400085
+          ),
+        }),
+        5000
+      );
+  }, [viewer]);
+
+  return null;
+};

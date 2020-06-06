@@ -14,7 +14,6 @@ export const Viewer = ({
   const viewerRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
-    console.log("LAYOUT EFFECT");
     if (containerRef.current) {
       const props = { args: [containerRef.current, ...args], ...viewerProps };
       const wrapped = (

@@ -3,6 +3,9 @@ import ReactReconciler from "react-reconciler";
 import { upperFirst } from "lodash/fp";
 import * as Cesium from "cesium";
 
+Cesium.Ion.defaultAccessToken =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkODhiMzU5YS0wYzI3LTRlNDItOTlkMC1jZmM1NGMyOThiZjkiLCJpZCI6MjU5LCJzY29wZXMiOlsiYXNyIiwiZ2MiXSwiaWF0IjoxNTkxMDQ3MTIzfQ.tdCE-sqNw6_6LY-j2jk035vpzEmVuAY3ajtBBpLDxuM";
+
 const instances = new Map();
 
 const hasSetter = (proto, key) =>
@@ -18,6 +21,7 @@ const appendInitialChild = (
   console.log("\nappendInitialChild:" + childType + " into " + containerType);
 
   switch (containerType) {
+    case "Cesium3DTileset":
     case "Entity":
       container[attach] = child;
       break;
@@ -33,6 +37,10 @@ const appendInitialChild = (
         case "GeoJsonDataSource":
         case "CustomDataSource":
           container.dataSources.add(child);
+          break;
+
+        case "Cesium3DTileset":
+          container.scene.primitives.add(child);
           break;
 
         default:
