@@ -3,8 +3,50 @@ import ReactReconciler from "react-reconciler";
 import { upperFirst } from "lodash/fp";
 import * as Cesium from "cesium";
 
+const instances = new Map();
+
 const hasSetter = (proto, key) =>
   Object.getOwnPropertyDescriptor(proto, key)?.set != null;
+
+const appendInitialChild = (
+  { cesiumObject: container },
+  { cesiumObject: child, attach }
+) => {
+  const containerType = container.constructor.name;
+  const childType = child.constructor.name;
+
+  console.log("\nappendInitialChild:" + childType + " into " + containerType);
+
+  switch (containerType) {
+    case "Entity":
+      container[attach] = child;
+      break;
+
+    case "CustomDataSource":
+    case "GeoJsonDataSource":
+    case "Viewer":
+      switch (childType) {
+        case "Entity":
+          container.entities.add(child);
+          break;
+
+        case "GeoJsonDataSource":
+        case "CustomDataSource":
+          container.dataSources.add(child);
+          break;
+
+        default:
+          throw new Error("Unsupported children");
+      }
+
+      break;
+
+    default:
+      throw new Error("Unsupported container");
+  }
+
+  // console.log(args);
+};
 
 const reconciler = ReactReconciler({
   supportsMutation: true,
@@ -38,10 +80,16 @@ const reconciler = ReactReconciler({
     }
   },
 
+  removeChild(...args) {
+    console.log("removeChild", ...args);
+  },
+  replaceContainerChildren(...args) {
+    console.log("removeChild", ...args);
+  },
+
   commitUpdate(instance, updatePayload, type, oldProps, newProps) {
     const { cesiumObject } = instance;
-
-    const { children, args, ...props } = newProps;
+    const { children, args, onUpdate, ...props } = newProps;
 
     const proto = Object.getPrototypeOf(cesiumObject);
 
@@ -50,6 +98,10 @@ const reconciler = ReactReconciler({
       .forEach(([key, value]) => {
         cesiumObject[key] = value;
       });
+
+    if (typeof onUpdate === "function") {
+      onUpdate(cesiumObject);
+    }
   },
   prepareForCommit() {},
   resetAfterCommit() {},
@@ -62,7 +114,8 @@ const reconciler = ReactReconciler({
     getChildHostContext,
     internalInstanceHandle
   ) {
-    const { args = [], ref, attach, children, ...remainingProps } = props;
+    console.log("create instance", type);
+    const { args = [], attach, children, ...remainingProps } = props;
 
     const propName = upperFirst(type);
 
@@ -78,63 +131,33 @@ const reconciler = ReactReconciler({
     return { cesiumObject, attach: attach };
   },
   appendChild(...args) {
-    // console.log("appendChild");
-    // console.log(args);
+    console.log("appendChild", args);
   },
-  appendInitialChild(
-    { cesiumObject: container },
-    { cesiumObject: child, attach }
-  ) {
-    console.log("\nappendInitialChild");
-
-    const containerType = container.constructor.name;
-    const childType = child.constructor.name;
-
-    switch (containerType) {
-      case "Entity":
-        container[attach] = child;
-        break;
-
-      case "CustomDataSource":
-      case "GeoJsonDataSource":
-      case "Viewer":
-        switch (childType) {
-          case "Entity":
-            container.entities.add(child);
-            break;
-
-          case "GeoJsonDataSource":
-          case "CustomDataSource":
-            container.dataSources.add(child);
-            break;
-
-          default:
-            throw new Error("Unsupported children");
-        }
-
-        break;
-
-      default:
-        throw new Error("Unsupported container");
-    }
-
-    // console.log(args);
-  },
+  appendInitialChild: appendInitialChild,
   appendChildToContainer(...args) {
-    // console.log("appendChildToContainer");
-    // console.log(args);
+    console.log("appendChildToContainer", args);
   },
   finalizeInitialChildren() {},
-  removeChildFromContainer() {},
+  removeChildFromContainer(container, child) {
+    console.log("removeChildFromContainer");
+  },
   getPublicInstance(instance) {
     return instance.cesiumObject;
+  },
+  switchInstance(...args) {
+    console.log("switchInstance", args);
   },
 });
 
 export function render(what: React.ReactNode, where: HTMLElement) {
-  // console.log(what, where);
-  const container = reconciler.createContainer(where, false, false);
-  reconciler.updateContainer(what, container, null, () =>
-    console.log("first update")
-  );
+  let container;
+  if (instances.has(where)) {
+    container = instances.get(where);
+  } else {
+    container = reconciler.createContainer(where, false, false);
+    instances.set(where, container);
+  }
+
+  reconciler.updateContainer(what, container, null, () => null);
+  return reconciler.getPublicRootInstance(container);
 }

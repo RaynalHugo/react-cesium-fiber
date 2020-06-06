@@ -1,5 +1,8 @@
+// @ts-nocheck
 import React, { useRef, useLayoutEffect } from "react";
 import { render } from "./reconciler";
+
+import { ViewerProvider, useViewer } from "./context";
 
 export const Viewer = ({
   children,
@@ -7,15 +10,23 @@ export const Viewer = ({
   style = {},
   ...viewerProps
 }: React.PropsWithChildren<{ args: any[]; style: React.CSSProperties }>) => {
-  const ref = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const viewerRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
-    if (ref.current) {
-      const props = { args: [ref.current, ...args], ...viewerProps };
-      // @ts-ignore
-      const wrapped = <viewer {...props}>{children}</viewer>;
-      render(wrapped, ref.current);
+    console.log("LAYOUT EFFECT");
+    if (containerRef.current) {
+      const props = { args: [containerRef.current, ...args], ...viewerProps };
+      const wrapped = (
+        <viewer ref={viewerRef} {...props}>
+          <ViewerProvider value={viewerRef.current}>{children}</ViewerProvider>
+        </viewer>
+      );
+      render(wrapped, containerRef.current);
     }
-  }, [children, ref.current]);
-  return <div style={style} ref={ref}></div>;
+  }, [children, containerRef.current]);
+
+  return <div style={style} ref={containerRef}></div>;
 };
+
+export { useViewer };
