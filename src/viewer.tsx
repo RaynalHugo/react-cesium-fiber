@@ -1,8 +1,11 @@
 // @ts-nocheck
 import React, { useRef, useLayoutEffect, useState } from "react";
+import { Viewer as CesiumViewer } from "cesium";
 import { render } from "./reconciler";
 
 import { ViewerProvider, useViewer } from "./context";
+
+import { ReactCesiumFiber } from "./types";
 
 // forward ref ?
 export const Viewer = ({
@@ -10,7 +13,12 @@ export const Viewer = ({
   args = [],
   style = {},
   ...viewerProps
-}: React.PropsWithChildren<{ args?: any[]; style?: React.CSSProperties }>) => {
+}: ReactCesiumFiber.Component<
+  CesiumViewer,
+ [ ConstructorParameters<typeof CesiumViewer>[1]]
+> & {
+  style?: React.CSSProperties;
+}): React.ReactElement => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [viewer, setViewer] = useState(null);
 

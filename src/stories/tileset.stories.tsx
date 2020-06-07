@@ -8,10 +8,12 @@ import {
 } from "cesium";
 import { Viewer, useViewer } from "../viewer";
 
+import "../types";
+
 require("cesium/Widgets/widgets.css");
 
 export default {
-  title: "Data Source",
+  title: "3D Tiles",
   component: Viewer,
 };
 

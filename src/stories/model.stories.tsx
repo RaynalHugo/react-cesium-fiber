@@ -8,6 +8,8 @@ import {
 import { Viewer } from "../viewer";
 import { usePreRender } from "../hooks";
 
+import "../types";
+
 require("cesium/Widgets/widgets.css");
 
 export default {
@@ -61,7 +63,7 @@ const PlaneModel = () => {
 
 export const Plane = () => {
   return (
-    <Viewer args={[ { shouldAnimate: true}]}>
+    <Viewer args={[{ shouldAnimate: true }]}>
       <PlaneModel />
     </Viewer>
   );

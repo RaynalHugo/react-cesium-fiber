@@ -21,11 +21,6 @@ const appendInitialChild = (
   console.log("\nappendInitialChild:" + childType + " into " + containerType);
 
   switch (containerType) {
-    case "Cesium3DTileset":
-    case "Entity":
-      container[attach] = child;
-      break;
-
     case "CustomDataSource":
     case "GeoJsonDataSource":
     case "Viewer":
@@ -49,8 +44,11 @@ const appendInitialChild = (
 
       break;
 
+    case "Cesium3DTileset":
+    case "Entity":
     default:
-      throw new Error("Unsupported container");
+      container[attach] = child;
+      break;
   }
 
   // console.log(args);

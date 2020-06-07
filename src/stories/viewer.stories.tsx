@@ -13,5 +13,5 @@ export const Basic = () => {
 };
 
 export const LowResolution = () => {
-  return <Viewer resolutionScale={0.2} />;
+  return <Viewer resolutionScale={0.2} args={[{ homeButton: false }]} />;
 };
