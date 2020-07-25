@@ -2,27 +2,31 @@
 import ReactReconciler from "react-reconciler";
 import { upperFirst } from "lodash/fp";
 import * as Cesium from "cesium";
+import { error001, error002 } from "./errors";
 
-Cesium.Ion.defaultAccessToken = process.env.CESIUM_ION_ACCESS_TOKEN;
+if (typeof process.env.CESIUM_ION_ACCESS_TOKEN === "string")
+  Cesium.Ion.defaultAccessToken = process.env.CESIUM_ION_ACCESS_TOKEN;
 
 const instances = new Map();
 
-const hasSetter = (proto, key) =>
-  Object.getOwnPropertyDescriptor(proto, key)?.set != null;
-
-const appendInitialChild = (
-  { cesiumObject: container },
-  { cesiumObject: child, attach }
-) => {
+const defaultAttach = (container, child) => {
   const containerType = container.constructor.name;
   const childType = child.constructor.name;
 
-  console.log("\nappendInitialChild:" + childType + " into " + containerType);
-
+  // console.log("\nappendInitialChild:" + childType + " into " + containerType);
   switch (containerType) {
     case "CustomDataSource":
-    case "GeoJsonDataSource":
-    case "Viewer":
+    case "GeoJsonDataSource": {
+      switch (childType) {
+        case "Entity":
+          container.entities.add(child);
+          break;
+        default:
+          throw error002;
+      }
+      break;
+    }
+    case "Viewer": {
       switch (childType) {
         case "Entity":
           container.entities.add(child);
@@ -38,19 +42,32 @@ const appendInitialChild = (
           break;
 
         default:
-          throw new Error("Unsupported children");
+          throw error002(containerType, childType);
       }
 
       break;
+    }
+  }
+};
 
-    case "Cesium3DTileset":
-    case "Entity":
-    default:
+const hasSetter = (proto, key) =>
+  Object.getOwnPropertyDescriptor(proto, key)?.set != null;
+
+const appendInitialChild = (
+  { cesiumObject: container },
+  { cesiumObject: child, attach = defaultAttach }
+) => {
+  switch (typeof attach) {
+    case "string":
       container[attach] = child;
       break;
-  }
 
-  // console.log(args);
+    case "function":
+      attach(container, child);
+      break;
+    default:
+      throw error001;
+  }
 };
 
 const reconciler = ReactReconciler({
