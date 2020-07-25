@@ -34,8 +34,6 @@ export const usePreUpdate = (callback, dependencyArray) => {
 
   useEffect(() => {
     if (viewer != null) {
-      console.log("set pre");
-
       const { scene } = viewer;
       return scene.preUpdate.addEventListener(memoisedCallback);
       // returns a function to remove the event listener
