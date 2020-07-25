@@ -61,10 +61,8 @@ const PlaneModel = () => {
   );
 };
 
-export const Plane = () => {
-  return (
-    <Viewer args={[{ shouldAnimate: true }]}>
-      <PlaneModel />
-    </Viewer>
-  );
-};
+export const Plane = () => (
+  <Viewer args={[{ shouldAnimate: true }]}>
+    <PlaneModel />
+  </Viewer>
+);

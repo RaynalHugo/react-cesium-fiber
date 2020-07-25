@@ -24,13 +24,11 @@ const UsaGeojson = () => {
 Ion.defaultAccessToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkODhiMzU5YS0wYzI3LTRlNDItOTlkMC1jZmM1NGMyOThiZjkiLCJpZCI6MjU5LCJzY29wZXMiOlsiYXNyIiwiZ2MiXSwiaWF0IjoxNTkxMDQ3MTIzfQ.tdCE-sqNw6_6LY-j2jk035vpzEmVuAY3ajtBBpLDxuM";
 
-export const GeoJson = () => {
-  return (
-    <Viewer args={[]}>
-      <UsaGeojson />
-    </Viewer>
-  );
-};
+export const GeoJson = () => (
+  <Viewer args={[]}>
+    <UsaGeojson />
+  </Viewer>
+);
 
 const pos1 = Cartesian3.fromDegrees(-114.0, 40.0, 300000.0);
 const pos2 = Cartesian3.fromDegrees(-114.0, 30.0, 300000.0);

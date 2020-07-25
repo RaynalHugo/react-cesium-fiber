@@ -8,10 +8,8 @@ export default {
   component: Viewer,
 };
 
-export const Basic = () => {
-  return <Viewer />;
-};
+export const Basic = () => <Viewer />;
 
-export const LowResolution = () => {
-  return <Viewer resolutionScale={0.2} args={[{ homeButton: false }]} />;
-};
+export const LowResolution = () => (
+  <Viewer resolutionScale={0.2} args={[{ homeButton: false }]} />
+);

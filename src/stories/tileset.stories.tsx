@@ -41,26 +41,24 @@ const ZoomTo = () => {
 Ion.defaultAccessToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkODhiMzU5YS0wYzI3LTRlNDItOTlkMC1jZmM1NGMyOThiZjkiLCJpZCI6MjU5LCJzY29wZXMiOlsiYXNyIiwiZ2MiXSwiaWF0IjoxNTkxMDQ3MTIzfQ.tdCE-sqNw6_6LY-j2jk035vpzEmVuAY3ajtBBpLDxuM";
 
-export const Tileset = () => {
-  return (
-    <Viewer
-      args={[{ shouldAnimate: true, terrainProvider: createWorldTerrain() }]}>
-      <ZoomTo />
-      <cesium3DTileset
+export const Tileset = () => (
+  <Viewer
+    args={[{ shouldAnimate: true, terrainProvider: createWorldTerrain() }]}>
+    <ZoomTo />
+    <cesium3DTileset
+      args={[
+        {
+          url: IonResource.fromAssetId(16421),
+        },
+      ]}>
+      <cesium3DTileStyle
+        attach={"style"}
         args={[
           {
-            url: IonResource.fromAssetId(16421),
+            pointSize: "3",
           },
-        ]}>
-        <cesium3DTileStyle
-          attach={"style"}
-          args={[
-            {
-              pointSize: "3",
-            },
-          ]}
-        />
-      </cesium3DTileset>
-    </Viewer>
-  );
-};
+        ]}
+      />
+    </cesium3DTileset>
+  </Viewer>
+);
