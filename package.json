@@ -6,7 +6,7 @@
   "main": "src/index.tsx",
   "dependencies": {
     "@storybook/preset-typescript": "3.0.0",
-    "lodash": "4.17.15",
+    "lodash": "4.17.19",
     "react-reconciler": "0.25.1"
   },
   "peerDependencies": {
