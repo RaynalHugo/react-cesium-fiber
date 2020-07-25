@@ -21,9 +21,6 @@ const UsaGeojson = () => {
   return <geoJsonDataSource ref={geojsonRef} />;
 };
 
-Ion.defaultAccessToken =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkODhiMzU5YS0wYzI3LTRlNDItOTlkMC1jZmM1NGMyOThiZjkiLCJpZCI6MjU5LCJzY29wZXMiOlsiYXNyIiwiZ2MiXSwiaWF0IjoxNTkxMDQ3MTIzfQ.tdCE-sqNw6_6LY-j2jk035vpzEmVuAY3ajtBBpLDxuM";
-
 export const GeoJson = () => (
   <Viewer args={[]}>
     <UsaGeojson />

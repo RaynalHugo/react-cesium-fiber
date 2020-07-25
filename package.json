@@ -43,7 +43,7 @@
     "build": "craco build",
     "test": "craco test --env=jsdom",
     "eject": "react-scripts eject",
-    "storybook": "start-storybook -p 9009 -s ./public",
+    "storybook": "source ./.env; start-storybook -p 9009 -s ./public",
     "build-storybook": "build-storybook -s ./public"
   },
   "browserslist": [
