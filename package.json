@@ -4,7 +4,9 @@
   "license": "MIT",
   "description": "React-fiber renderer for cesium",
   "keywords": [],
-  "main": "src/index.tsx",
+  "main": "lib/index.cjs.js",
+  "module": "lib/index.esm.js",
+  "types": "lib/index.d.ts",
   "author": {
     "name": "Hugo Raynal",
     "email": "raynalhugo@gmail.com"
@@ -20,8 +22,12 @@
   },
   "devDependencies": {
     "@babel/core": "7.10.5",
-    "babel-loader": "8.1.0",
+    "@babel/preset-env": "7.10.4",
+    "@babel/preset-react": "7.10.4",
+    "@babel/preset-typescript": "7.10.4",
     "@hot-loader/react-dom": "16.13.0",
+    "@rollup/plugin-commonjs": "14.0.0",
+    "@rollup/plugin-node-resolve": "8.4.0",
     "@storybook/addon-actions": "6.0.0-rc.14",
     "@storybook/addon-links": "6.0.0-rc.14",
     "@storybook/addons": "6.0.0-rc.14",
@@ -31,15 +37,22 @@
     "@types/react": "16.9.35",
     "@types/react-dom": "16.9.8",
     "@types/react-reconciler": "0.18.0",
+    "babel-loader": "8.1.0",
+    "builtin-modules": "3.1.0",
     "cesium": "1.70.0",
     "copy-webpack-plugin": "6.0.2",
     "react": "16.13.0",
     "react-dom": "16.13.0",
     "react-hot-loader": "4.12.21",
-    "typescript": "3.7.5",
-    "webpack": "4.42.0"
+    "rollup": "2.23.0",
+    "rollup-plugin-babel": "4.4.0",
+    "rollup-plugin-commonjs": "10.1.0",
+    "rollup-plugin-node-resolve": "5.2.0",
+    "typescript": "3.9.7",
+    "webpack": "4.44.0"
   },
   "scripts": {
+    "build": "rollup -c ./rollup.config.js",
     "storybook": "source ./.env; start-storybook -p 9009 -s ./public",
     "build-storybook": "build-storybook -s ./public"
   },
