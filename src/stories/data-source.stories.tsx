@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Cartesian3, Color, Ion, GeoJsonDataSource } from "cesium";
+import { Cartesian3, Color, GeoJsonDataSource } from "cesium";
 import { Viewer } from "../viewer";
 
 import "../types";
@@ -22,7 +22,7 @@ const UsaGeojson = () => {
 };
 
 export const GeoJson = () => (
-  <Viewer args={[]}>
+  <Viewer>
     <UsaGeojson />
   </Viewer>
 );
@@ -82,7 +82,7 @@ const BlinkingCollection = () => {
 };
 
 export const CustomDataSource = () => (
-  <Viewer args={[]}>
+  <Viewer>
     <BlinkingCollection />
   </Viewer>
 );
