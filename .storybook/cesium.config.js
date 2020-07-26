@@ -1,7 +1,6 @@
 const path = require("path");
 const webpackModule = require("webpack");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-const HtmlWebpackTagsPlugin = require("html-webpack-tags-plugin");
 
 function webpack(
   webpackConfig = {},

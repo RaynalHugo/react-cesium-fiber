@@ -1,12 +1,17 @@
 {
   "name": "react-cesium-fiber",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.1.0",
+  "license": "MIT",
+  "description": "React-fiber renderer for cesium",
   "keywords": [],
   "main": "src/index.tsx",
+  "author": {
+    "name": "Hugo Raynal",
+    "email": "raynalhugo@gmail.com"
+  },
+  "sideEffects": false,
   "dependencies": {
-    "@storybook/preset-typescript": "3.0.0",
-    "lodash": "4.17.15",
+    "lodash": "4.17.19",
     "react-reconciler": "0.25.1"
   },
   "peerDependencies": {
@@ -14,13 +19,13 @@
     "react": "^16.8.0"
   },
   "devDependencies": {
-    "@craco/craco": "5.6.4",
+    "@babel/core": "7.10.5",
+    "babel-loader": "8.1.0",
     "@hot-loader/react-dom": "16.13.0",
-    "@storybook/addon-actions": "6.0.0-beta.22",
-    "@storybook/addon-links": "6.0.0-beta.22",
-    "@storybook/addons": "6.0.0-beta.22",
-    "@storybook/preset-create-react-app": "^3.0.0",
-    "@storybook/react": "6.0.0-beta.22",
+    "@storybook/addon-actions": "6.0.0-rc.14",
+    "@storybook/addon-links": "6.0.0-rc.14",
+    "@storybook/addons": "6.0.0-rc.14",
+    "@storybook/react": "6.0.0-rc.14",
     "@types/cesium": "1.67.10",
     "@types/lodash": "4.14.154",
     "@types/react": "16.9.35",
@@ -28,21 +33,13 @@
     "@types/react-reconciler": "0.18.0",
     "cesium": "1.70.0",
     "copy-webpack-plugin": "6.0.2",
-    "craco-cesium": "1.2.0",
-    "craco-plugin-react-hot-reload": "0.1.0",
-    "html-webpack-tags-plugin": "2.0.17",
-    "react": "16.13.1",
-    "react-dom": "16.13.1",
+    "react": "16.13.0",
+    "react-dom": "16.13.0",
     "react-hot-loader": "4.12.21",
-    "react-scripts": "3.4.1",
     "typescript": "3.7.5",
     "webpack": "4.42.0"
   },
   "scripts": {
-    "start": "craco start",
-    "build": "craco build",
-    "test": "craco test --env=jsdom",
-    "eject": "react-scripts eject",
     "storybook": "source ./.env; start-storybook -p 9009 -s ./public",
     "build-storybook": "build-storybook -s ./public"
   },
