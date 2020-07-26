@@ -1,8 +1,9 @@
 // @ts-nocheck
 import ReactReconciler from "react-reconciler";
-import { upperFirst } from "lodash/fp";
+import { upperFirst, isString } from "lodash/fp";
 import * as Cesium from "cesium";
-import { error001, error002 } from "./errors";
+import { error001, error002, error003 } from "./errors";
+import { isFunction } from "lodash/fp";
 
 if (typeof process.env.CESIUM_ION_ACCESS_TOKEN === "string")
   Cesium.Ion.defaultAccessToken = process.env.CESIUM_ION_ACCESS_TOKEN;
@@ -20,50 +21,49 @@ const defaultAttach = (container, child) => {
       switch (childType) {
         case "Entity":
           container.entities.add(child);
-          break;
+          return (container, child) => container.entities.remove(child);
         default:
           throw error002;
       }
-      break;
     }
     case "Viewer": {
       switch (childType) {
         case "Entity":
           container.entities.add(child);
-          break;
-
+          return (container, child) => container.entities.remove(child);
         case "GeoJsonDataSource":
         case "CustomDataSource":
           container.dataSources.add(child);
-          break;
+          return (container, child) =>
+            container.dataSources.remove(child, true);
 
         case "Cesium3DTileset":
           container.scene.primitives.add(child);
-          break;
+          return (container, child) => container.scene.primitives.remove(child);
 
         default:
           throw error002(containerType, childType);
       }
-
-      break;
     }
+
+    default:
+      throw error002(containerType, childType);
   }
 };
 
 const hasSetter = (proto, key) =>
   Object.getOwnPropertyDescriptor(proto, key)?.set != null;
 
-const appendInitialChild = (
-  { cesiumObject: container },
-  { cesiumObject: child, attach = defaultAttach }
-) => {
+const appendInitialChild = (containerNode, childNode) => {
+  const { cesiumObject: container } = containerNode;
+  const { cesiumObject: child, attach = defaultAttach } = childNode;
   switch (typeof attach) {
     case "string":
       container[attach] = child;
       break;
 
     case "function":
-      attach(container, child);
+      childNode.detach = attach(container, child);
       break;
     default:
       throw error001;
@@ -102,11 +102,23 @@ const reconciler = ReactReconciler({
     }
   },
 
-  removeChild(...args) {
-    console.log("removeChild", ...args);
+  removeChild(
+    { cesiumObject: container },
+    { cesiumObject: child, attach, detach }
+  ) {
+    if (isFunction(detach)) {
+      detach(container, child);
+    } else if (isString(attach)) {
+      container[attach] = null;
+    } else {
+      throw error003(container.constructor.name, child.constructor.name);
+    }
+
+    Cesium.destroyObject(child);
+    console.log("removeChild");
   },
   replaceContainerChildren(...args) {
-    console.log("removeChild", ...args);
+    console.log("replaceContainerChildren", ...args);
   },
 
   commitUpdate(instance, updatePayload, type, oldProps, newProps) {
@@ -154,12 +166,15 @@ const reconciler = ReactReconciler({
   },
   appendChild(...args) {
     console.log("appendChild", args);
+    appendInitialChild(...args);
   },
   appendInitialChild: appendInitialChild,
   appendChildToContainer(...args) {
     console.log("appendChildToContainer", args);
   },
-  finalizeInitialChildren() {},
+  finalizeInitialChildren(...args) {
+    // console.log("finalizeInitialChildren", args);
+  },
   removeChildFromContainer(container, child) {
     console.log("removeChildFromContainer");
   },

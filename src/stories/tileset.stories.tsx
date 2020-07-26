@@ -3,7 +3,6 @@ import {
   Cartesian3,
   HeadingPitchRoll,
   IonResource,
-  Ion,
   createWorldTerrain,
 } from "cesium";
 import { Viewer, useViewer } from "../viewer";
