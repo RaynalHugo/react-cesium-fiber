@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "license": "MIT",
   "description": "React-fiber renderer for cesium",
-  "keywords": [],
   "main": "lib/index.cjs.js",
   "module": "lib/index.esm.js",
   "types": "lib/index.d.ts",
@@ -12,6 +11,25 @@
     "email": "raynalhugo@gmail.com"
   },
   "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RaynalHugo/react-cesium-fiber.git"
+  },
+  "homepage": "https://github.com/RaynalHugo/react-cesium-fiber#readme",
+  "bugs": {
+    "url": "https://github.com/RaynalHugo/react-cesium-fiber/issues"
+  },
+  "keywords": [
+    "react",
+    "renderer",
+    "fiber",
+    "cesium",
+    "cesiumjs",
+    "map",
+    "3D",
+    "globe",
+    "earth"
+  ],
   "dependencies": {
     "lodash": "4.17.19",
     "react-reconciler": "0.25.1"
@@ -52,9 +70,11 @@
     "webpack": "4.44.0"
   },
   "scripts": {
-    "build": "rollup -c ./rollup.config.js",
-    "storybook": "source ./.env; start-storybook -p 9009 -s ./public",
-    "build-storybook": "build-storybook -s ./public"
+    "build:lib": "rollup -c ./rollup.config.js",
+    "build:storybook": "build-storybook -s ./public",
+    "build:types": "tsc --emitDeclarationOnly",
+    "build": "yarn build:lib && yarn build:types",
+    "storybook": "source ./.env; start-storybook -p 9009 -s ./public"
   },
   "browserslist": [
     ">0.2%",

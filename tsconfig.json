@@ -14,7 +14,8 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
-    "types": ["./src/types.ts"]
+    "noEmit": false,
+    "declaration": true,
+    "outDir": "lib"
   }
 }
