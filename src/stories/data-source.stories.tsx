@@ -27,7 +27,6 @@ export const GeoJson = () => (
   </Viewer>
 );
 
-const pos1 = Cartesian3.fromDegrees(-114.0, 40.0, 300000.0);
 const pos2 = Cartesian3.fromDegrees(-114.0, 30.0, 300000.0);
 const pos3 = Cartesian3.fromDegrees(-114.0, 20.0, 300000.0);
 

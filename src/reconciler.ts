@@ -3,11 +3,7 @@ import ReactReconciler from "react-reconciler";
 import { upperFirst, isString } from "lodash/fp";
 import * as Cesium from "cesium";
 import { error001, error002, error003, error004, error005 } from "./errors";
-import { isFunction } from "lodash/fp";
-import { isNil } from "lodash";
-
-if (typeof process.env.CESIUM_ION_ACCESS_TOKEN === "string")
-  Cesium.Ion.defaultAccessToken = process.env.CESIUM_ION_ACCESS_TOKEN;
+import { isFunction, isNil } from "lodash/fp";
 
 const instances = new Map();
 

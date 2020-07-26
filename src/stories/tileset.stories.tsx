@@ -1,15 +1,18 @@
 import React, { useEffect } from "react";
 import {
   Cartesian3,
-  HeadingPitchRoll,
-  IonResource,
   createWorldTerrain,
+  HeadingPitchRoll,
+  Ion,
+  IonResource,
 } from "cesium";
 import { Viewer, useViewer } from "../viewer";
 
 import "../types";
 
 require("cesium/Widgets/widgets.css");
+if (typeof process.env.CESIUM_ION_ACCESS_TOKEN === "string")
+  Ion.defaultAccessToken = process.env.CESIUM_ION_ACCESS_TOKEN;
 
 export default {
   title: "3D Tiles",
@@ -36,9 +39,6 @@ const ZoomTo = () => {
   }, [viewer]);
   return null;
 };
-
-// Ion.defaultAccessToken =
-//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkODhiMzU5YS0wYzI3LTRlNDItOTlkMC1jZmM1NGMyOThiZjkiLCJpZCI6MjU5LCJzY29wZXMiOlsiYXNyIiwiZ2MiXSwiaWF0IjoxNTkxMDQ3MTIzfQ.tdCE-sqNw6_6LY-j2jk035vpzEmVuAY3ajtBBpLDxuM";
 
 export const Tileset = () => (
   <Viewer

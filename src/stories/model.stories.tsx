@@ -1,9 +1,9 @@
 import React, { useRef, useMemo } from "react";
 import {
   Cartesian3,
+  ExtrapolationType,
   JulianDate,
   SampledPositionProperty,
-  ExtrapolationType,
 } from "cesium";
 import { Viewer } from "../viewer";
 import { usePreRender } from "../hooks";
@@ -28,7 +28,7 @@ const PlaneModel = () => {
 
   const samples = useMemo(() => new SampledPositionProperty(), []);
 
-  usePreRender((scene, time) => {
+  usePreRender((_scene, time) => {
     const increment = JulianDate.secondsDifference(time, previousDate.current);
 
     samples.addSample(time, Cartesian3.fromDegrees(...actualPosition.current));
@@ -47,16 +47,10 @@ const PlaneModel = () => {
 
   return (
     <entity
-      // position={new Cartesian3.fromDegrees(...actualPosition.current)}
       position={samples}
       description={"Weeeeee, I am a plane"}
       args={[{ id: "Big jet plane" }]}>
-      <modelGraphics
-        attach="model"
-        scale={50000}
-        // material={Color.RED}
-        uri={"./plane.glb"}
-      />
+      <modelGraphics attach="model" scale={50000} uri={"./plane.glb"} />
     </entity>
   );
 };

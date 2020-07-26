@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Color, IonResource } from "cesium";
+import { Color, IonResource, Ion } from "cesium";
 import { Viewer } from "../viewer";
 
 import "../types";
 
 require("cesium/Widgets/widgets.css");
+if (typeof process.env.CESIUM_ION_ACCESS_TOKEN === "string")
+  Ion.defaultAccessToken = process.env.CESIUM_ION_ACCESS_TOKEN;
 
 export default {
   title: "Remove child",
