@@ -1,5 +1,5 @@
 import React from "react";
-import { Cartesian3, Color } from "cesium";
+import { Color } from "cesium";
 import { Viewer } from "../viewer";
 
 import "../types";
@@ -11,8 +11,6 @@ export default {
   component: Viewer,
 };
 
-const pos2 = Cartesian3.fromDegrees(-114.0, 30.0, 300000.0);
-const pos3 = Cartesian3.fromDegrees(-114.0, 20.0, 300000.0);
 const greenWithOpacity = Color.GREEN.withAlpha(0.5);
 
 export const Various = () => (
@@ -26,12 +24,22 @@ export const Various = () => (
         <cartesian3 attach="dimensions" args={[400000.0, 300000.0, 500000.0]} />
       </boxGraphics>
     </entity>
-    <entity position={pos2}>
+    <entity>
+      <cartesian3
+        attach="position"
+        constructFrom="fromDegrees"
+        args={[-114.0, 30.0, 300000.0]}
+      />
       <boxGraphics attach="box" material={Color.RED}>
         <cartesian3 attach="dimensions" args={[400000.0, 300000.0, 500000.0]} />
       </boxGraphics>
     </entity>
-    <entity position={pos3}>
+    <entity>
+      <cartesian3
+        attach="position"
+        constructFrom="fromDegrees"
+        args={[-114.0, 20.0, 300000.0]}
+      />
       <cylinderGraphics
         attach="cylinder"
         length={400000.0}
@@ -39,8 +47,7 @@ export const Various = () => (
         bottomRadius={200000.0}
         material={greenWithOpacity}
         outline={true}
-        outlineColor={Color.DARKGREEN}
-      />
+        outlineColor={Color.DARKGREEN}></cylinderGraphics>
     </entity>
   </Viewer>
 );

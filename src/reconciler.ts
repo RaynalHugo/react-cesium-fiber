@@ -2,8 +2,9 @@
 import ReactReconciler from "react-reconciler";
 import { upperFirst, isString } from "lodash/fp";
 import * as Cesium from "cesium";
-import { error001, error002, error003 } from "./errors";
+import { error001, error002, error003, error004, error005 } from "./errors";
 import { isFunction } from "lodash/fp";
+import { isNil } from "lodash";
 
 if (typeof process.env.CESIUM_ION_ACCESS_TOKEN === "string")
   Cesium.Ion.defaultAccessToken = process.env.CESIUM_ION_ACCESS_TOKEN;
@@ -149,11 +150,29 @@ const reconciler = ReactReconciler({
     internalInstanceHandle
   ) {
     console.log("create instance", type);
-    const { args = [], attach, children, ...remainingProps } = props;
+    const {
+      args = [],
+      constructFrom,
+      attach,
+      children,
+      ...remainingProps
+    } = props;
 
-    const propName = upperFirst(type);
+    const name = upperFirst(type);
+    const target = Cesium[name];
 
-    const cesiumObject = new Cesium[propName](...args);
+    let cesiumObject;
+
+    if (isNil(target)) {
+      throw error004(name);
+    } else if (isNil(constructFrom)) {
+      cesiumObject = new target(...args);
+    } else if (isFunction(target[constructFrom])) {
+      cesiumObject = target[constructFrom](...args);
+    } else {
+      throw error005(constructFrom, target);
+    }
+
     const proto = Object.getPrototypeOf(cesiumObject);
 
     Object.entries(remainingProps)

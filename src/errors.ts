@@ -11,3 +11,9 @@ export const error003 = (containerType, childType) =>
     header("003") +
       `Couldn't remove this child from this container. You can specify how to detach this type of child ("${childType}") from this type of container ("${containerType}") using the "attach" props.`
   );
+export const error004 = (name) =>
+  new Error(header("004") + `${name} is not exported by cesium.`);
+export const error005 = (constructorName, objectName) =>
+  new Error(
+    header("005") + `${constructorName} is not a constructor for ${objectName}`
+  );

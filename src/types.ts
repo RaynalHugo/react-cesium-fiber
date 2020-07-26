@@ -44,7 +44,13 @@ export declare namespace ReactCesiumFiber {
 
   type NodeProps<ConstructorOptions = any> = {
     args?: ConstructorOptions;
-    attach?: string;
+    constructFrom?: string;
+    attach?:
+      | string
+      | (<Container = any, Child = any>(
+          container: Container,
+          child: Child
+        ) => (container: Container, child: Child) => void);
     children?: React.ReactNode;
     ref?: React.Ref<React.ReactNode>;
     key?: React.Key;
