@@ -43,26 +43,27 @@ function webpack(
   // if (loadPartially) {
   // https://cesium.com/docs/tutorials/cesium-and-webpack/
 
-  if (prod) {
-    // Strip cesium pragmas
-    webpackConfig.module = webpackConfig.module || {};
-    webpackConfig.module.rules = webpackConfig.module.rules || [];
-    webpackConfig.module.rules.push({
-      test: /.js$/,
-      enforce: "pre",
-      include: cesiumSource,
-      use: [
-        {
-          loader: "strip-pragma-loader",
-          options: {
-            pragmas: {
-              debug: false,
-            },
-          },
-        },
-      ],
-    });
-  }
+  // FIXME: throws error at build time
+  // if (prod) {
+  //   // Strip cesium pragmas
+  //   webpackConfig.module = { ...webpackConfig.module } || {};
+  //   webpackConfig.module.rules = webpackConfig.module.rules || [];
+  //   webpackConfig.module.rules.push({
+  //     test: /.js$/,
+  //     enforce: "pre",
+  //     include: cesiumSource,
+  //     use: [
+  //       {
+  //         loader: "strip-pragma-loader",
+  //         options: {
+  //           pragmas: {
+  //             debug: false,
+  //           },
+  //         },
+  //       },
+  //     ],
+  //   });
+  // }
 
   webpackConfig.resolve.alias = {
     ...webpackConfig.resolve.alias,
@@ -115,6 +116,7 @@ function webpack(
     fs: "empty",
   };
 
+  console.log(webpackConfig.module.rules[3]);
   return webpackConfig;
 }
 
