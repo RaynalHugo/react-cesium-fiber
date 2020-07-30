@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/react-cesium-fiber.svg)](https://badge.fury.io/js/react-cesium-fiber)
 
-`react-three-fiber` is a React <a href="https://reactjs.org/docs/codebase-overview.html#renderers">renderer</a> for <a href="https://cesium.com/cesiumjs/">CesiumJs</a> on the web.
+`react-cesium-fiber` is a React <a href="https://reactjs.org/docs/codebase-overview.html#renderers">renderer</a> for <a href="https://cesium.com/cesiumjs/">CesiumJs</a> on the web.
 
 ## 👨🏻‍💻**Work in Progress**🛠
 
