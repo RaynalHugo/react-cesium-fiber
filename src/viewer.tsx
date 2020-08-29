@@ -7,15 +7,18 @@ import { ViewerProvider, useViewer } from "./context";
 
 import { ReactCesiumFiber } from "./types";
 
+const defaultArgs = [];
+const defaultStyle = {};
+
 // forward ref ?
 export const Viewer = ({
   children,
-  args = [],
-  style = {},
+  args = defaultArgs,
+  style = defaultStyle,
   ...viewerProps
 }: ReactCesiumFiber.Component<
   CesiumViewer,
- [ ConstructorParameters<typeof CesiumViewer>[1]]
+  [ConstructorParameters<typeof CesiumViewer>[1]]
 > & {
   style?: React.CSSProperties;
 }): React.ReactElement => {
