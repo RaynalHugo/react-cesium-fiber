@@ -1,13 +1,13 @@
 import ReactReconciler from "react-reconciler";
 
+import { appendChild } from "./append-child";
 import { commitUpdate } from "./commit-update";
 import { createInstance } from "./create-instance";
-import { appendChild } from "./append-child";
-import { removeChild } from "./remove-child";
-import { prepareUpdate } from "./prepare-update";
-import { getPublicInstance } from "./get-public-instance";
-import { shouldSetTextContent } from "./should-set-text-content";
 import { finalizeInitialChildren } from "./finalize-initial-children";
+import { getPublicInstance } from "./get-public-instance";
+import { prepareUpdate } from "./prepare-update";
+import { removeChild } from "./remove-child";
+import { shouldSetTextContent } from "./should-set-text-content";
 
 const instances = new Map();
 
