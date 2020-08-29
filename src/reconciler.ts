@@ -5,6 +5,8 @@ import * as Cesium from "cesium";
 import { error001, error002, error003, error004, error005 } from "./errors";
 import { isFunction, isNil } from "lodash/fp";
 
+import { updateCesiumObject } from "./utils/update-cesium-object";
+
 const instances = new Map();
 
 const defaultAttach = (container, child) => {
@@ -47,9 +49,6 @@ const defaultAttach = (container, child) => {
       throw error002(containerType, childType);
   }
 };
-
-const hasSetter = (proto, key) =>
-  Object.getOwnPropertyDescriptor(proto, key)?.set != null;
 
 const appendInitialChild = (containerNode, childNode) => {
   const { cesiumObject: container } = containerNode;
@@ -122,13 +121,8 @@ const reconciler = ReactReconciler({
     const { cesiumObject } = instance;
     const { children, args, onUpdate, ...props } = newProps;
 
-    const proto = Object.getPrototypeOf(cesiumObject);
-
-    Object.entries(props)
-      .filter(([key]) => hasSetter(proto, key))
-      .forEach(([key, value]) => {
-        cesiumObject[key] = value;
-      });
+    //TODO: Check if prop has changed before setting it
+    updateCesiumObject(cesiumObject, props);
 
     if (typeof onUpdate === "function") {
       onUpdate(cesiumObject);
@@ -169,14 +163,7 @@ const reconciler = ReactReconciler({
       throw error005(constructFrom, target);
     }
 
-    const proto = Object.getPrototypeOf(cesiumObject);
-
-    Object.entries(remainingProps)
-      .filter(([key]) => hasSetter(proto, key))
-      .forEach(([key, value]) => {
-        cesiumObject[key] = value;
-      });
-
+    updateCesiumObject(cesiumObject, props);
     return { cesiumObject, attach: attach };
   },
   appendChild(...args) {
