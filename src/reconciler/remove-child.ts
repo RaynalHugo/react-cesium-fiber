@@ -3,7 +3,9 @@ import { destroyObject } from "cesium";
 import { error003 } from "../errors";
 import { isFunction } from "lodash/fp";
 
-export const removeChild = (
+import { Reconciler } from "./types";
+
+export const removeChild = ((
   { cesiumObject: container },
   { cesiumObject: child, attach, detach }
 ) => {
@@ -16,5 +18,4 @@ export const removeChild = (
   }
 
   destroyObject(child);
-  console.log("removeChild");
-};
+}) as Reconciler["removeChild"];

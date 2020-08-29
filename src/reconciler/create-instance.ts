@@ -5,20 +5,16 @@ import { isFunction, isNil } from "lodash/fp";
 
 import { updateCesiumObject } from "../utils/update-cesium-object";
 
-export const createInstance = (
-  type: string,
+import { Reconciler } from "./types";
+
+export const createInstance = ((
+  type,
   props,
   rootContainerInstance,
   getChildHostContext,
   internalInstanceHandle
 ) => {
-  const {
-    args = [],
-    constructFrom,
-    attach,
-    children,
-    ...remainingProps
-  } = props;
+  const { args = [], constructFrom, attach } = props;
 
   const name = upperFirst(type);
   const target = Cesium[name];
@@ -37,4 +33,4 @@ export const createInstance = (
 
   updateCesiumObject(cesiumObject, {}, props);
   return { cesiumObject, attach: attach };
-};
+}) as Reconciler["createInstance"];

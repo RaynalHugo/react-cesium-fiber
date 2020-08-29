@@ -4,29 +4,59 @@ import { appendChild } from "./append-child";
 import { commitUpdate } from "./commit-update";
 import { createInstance } from "./create-instance";
 import { finalizeInitialChildren } from "./finalize-initial-children";
+import { getChildHostContext } from "./get-child-host-context";
 import { getPublicInstance } from "./get-public-instance";
+import { getRootHostContext } from "./get-root-host-context";
 import { prepareUpdate } from "./prepare-update";
 import { removeChild } from "./remove-child";
 import { shouldSetTextContent } from "./should-set-text-content";
 
 const instances = new Map();
+import {
+  Type,
+  Props,
+  Container,
+  Instance,
+  TextInstance,
+  HydratableInstance,
+  PublicInstance,
+  HostContext,
+  UpdatePayload,
+  ChildSet,
+  TimeoutHandle,
+  NoTimeout,
+} from "./types";
 
-const reconciler = ReactReconciler({
+const reconciler = ReactReconciler<
+  Type,
+  Props,
+  Container,
+  Instance,
+  TextInstance,
+  HydratableInstance,
+  PublicInstance,
+  HostContext,
+  UpdatePayload,
+  ChildSet,
+  TimeoutHandle,
+  NoTimeout
+>({
+  supportsMutation: true,
+
   appendChild,
   appendInitialChild: appendChild,
   commitUpdate,
   createInstance,
   finalizeInitialChildren,
+  getChildHostContext,
   getPublicInstance,
+  getRootHostContext,
   prepareUpdate,
   removeChild,
   shouldSetTextContent,
-  supportsMutation: true,
 
   appendChildToContainer() {},
-  createTextInstance() {},
-  getChildHostContext() {},
-  getRootHostContext() {},
+  // createTextInstance() {},
   prepareForCommit() {},
   removeChildFromContainer() {},
   replaceContainerChildren() {},

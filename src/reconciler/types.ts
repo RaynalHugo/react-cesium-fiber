@@ -1,46 +1,58 @@
 import { PropsWithChildren } from "react";
 import { HostConfig } from "react-reconciler";
-import * as Cesium from "cesium";
 
-export type CesiumObject = unknown;
+//FIXME: Maybe something more explicit
+export type CesiumObject = object;
+
 export type Detach = (container: CesiumObject, child: CesiumObject) => void;
-type Attach =
+export type Attach =
   | string
   | ((container: CesiumObject, child: CesiumObject) => Detach);
 
 // Types for React-reconciler
-type Type = string;
+export type Type = string;
 
-type Props = PropsWithChildren<{
-  args?: any;
+export type Props = PropsWithChildren<{
+  args?: any[];
   onUpdate?: any;
+  constructFrom: string;
   [key: string]: any;
 }>;
 
-//FIXME:
-type Container = CesiumObject;
+export type Container = CesiumObject;
 
-type Instance = {
+export type Instance = {
   cesiumObject: CesiumObject;
   attach?: Attach;
   detach: (container: Container, child: Container) => void;
 };
 
-type Text = null;
+export type TextInstance = null;
+
+export type HydratableInstance = Instance;
+
+export type PublicInstance = Instance["cesiumObject"];
+
+export type HostContext = any;
+
+export type UpdatePayload = boolean;
+
+//FIXME: No idea what this is
+export type ChildSet = unknown;
+export type TimeoutHandle = unknown;
+export type NoTimeout = -1;
 
 export type Reconciler = HostConfig<
   Type,
   Props,
   Container,
   Instance,
-  Text,
-  unknown,
-  unknown,
-  unknown,
-  unknown,
-  unknown,
-  unknown,
-  unknown
+  TextInstance,
+  HydratableInstance,
+  PublicInstance,
+  HostContext,
+  UpdatePayload,
+  ChildSet,
+  TimeoutHandle,
+  NoTimeout
 >;
-
-export type createInstance = Reconciler["createInstance"];

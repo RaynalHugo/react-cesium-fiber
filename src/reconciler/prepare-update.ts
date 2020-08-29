@@ -1,4 +1,6 @@
-export const prepareUpdate = (
+import { Reconciler } from "./types";
+
+export const prepareUpdate = ((
   instance,
   type,
   oldProps: object,
@@ -20,4 +22,4 @@ export const prepareUpdate = (
       .filter((key) => key !== "children")
       .some((key) => oldProps[key] !== newProps[key]);
   }
-};
+}) as Reconciler["prepareUpdate"];

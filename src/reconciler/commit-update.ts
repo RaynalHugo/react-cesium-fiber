@@ -1,6 +1,7 @@
 import { updateCesiumObject } from "../utils/update-cesium-object";
+import { Reconciler } from "./types";
 
-export const commitUpdate = (
+export const commitUpdate = ((
   instance,
   updatePayload,
   type,
@@ -19,4 +20,4 @@ export const commitUpdate = (
   if (typeof onUpdate === "function") {
     onUpdate(cesiumObject);
   }
-};
+}) as Reconciler["commitUpdate"];
