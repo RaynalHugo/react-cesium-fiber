@@ -23,17 +23,22 @@ export const forEachSetterOf = (
  *
  * This code checks, for every given props,
  * if the cesium entity has a setter for the prop.
- * If it has one, it sets the value to the cesium object.
- * @param cesiumObject
- * @param props
+ * If it has one, it sets the value to the cesium object,
+ * but it only sets it if it changed from the previous props.
+ *
+ * @param cesiumObject The cesium object to update
+ * @param props The props potentially containing new changes
  */
 export const updateCesiumObject = (
   cesiumObject: object,
+  oldProps: object = {},
   props: object
 ): void => {
   forEachSetterOf(
     (key, value) => {
-      cesiumObject[key] = value;
+      if (oldProps[key] !== value) {
+        cesiumObject[key] = value;
+      }
     },
     Object.getPrototypeOf(cesiumObject),
     props

@@ -117,16 +117,57 @@ describe("updateCesiumObject", () => {
       setters = [];
     }
     const cesiumObject = new CesiumObject();
-    updateCesiumObject(cesiumObject, {
-      setter1: "a",
-      setter2: "b",
-      setter3: "c",
-    });
+    updateCesiumObject(
+      cesiumObject,
+      {
+        setter1: "d",
+        setter2: "e",
+        setter3: "f",
+      },
+      {
+        setter1: "a",
+        setter2: "b",
+        setter3: "c",
+      }
+    );
 
     expect(cesiumObject).toEqual({
       setter1: undefined,
       setter2: undefined,
       setters: ["a", "b"],
+    });
+  });
+
+  test("Don't update same props", () => {
+    class CesiumObject {
+      set setter1(value) {
+        this.setters.push(value);
+      }
+      set setter2(value) {
+        this.setters.push(value);
+      }
+
+      setters = [];
+    }
+    const cesiumObject = new CesiumObject();
+    updateCesiumObject(
+      cesiumObject,
+      {
+        setter1: "a",
+        setter2: "e",
+        setter3: "f",
+      },
+      {
+        setter1: "a",
+        setter2: "b",
+        setter3: "c",
+      }
+    );
+
+    expect(cesiumObject).toEqual({
+      setter1: undefined,
+      setter2: undefined,
+      setters: ["b"],
     });
   });
 });

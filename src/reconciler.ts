@@ -121,8 +121,7 @@ const reconciler = ReactReconciler({
     const { cesiumObject } = instance;
     const { children, args, onUpdate, ...props } = newProps;
 
-    //TODO: Check if prop has changed before setting it
-    updateCesiumObject(cesiumObject, props);
+    updateCesiumObject(cesiumObject, oldProps, props);
 
     if (typeof onUpdate === "function") {
       onUpdate(cesiumObject);
@@ -163,7 +162,7 @@ const reconciler = ReactReconciler({
       throw error005(constructFrom, target);
     }
 
-    updateCesiumObject(cesiumObject, props);
+    updateCesiumObject(cesiumObject, {}, props);
     return { cesiumObject, attach: attach };
   },
   appendChild(...args) {
