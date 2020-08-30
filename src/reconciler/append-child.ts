@@ -1,7 +1,7 @@
 import { Reconciler, CesiumObject, Detach } from "./types";
 import { Entity, DataSource, Viewer, Primitive } from "cesium";
 
-import { error001, error002 } from "../errors";
+import { error001, error002 } from "../utils/errors";
 
 const defaultAttach = (
   container: CesiumObject,

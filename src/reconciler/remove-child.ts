@@ -1,6 +1,6 @@
 import { isString } from "lodash/fp";
 import { destroyObject } from "cesium";
-import { error003 } from "../errors";
+import { error003 } from "../utils/errors";
 import { isFunction } from "lodash/fp";
 
 import { Reconciler } from "./types";

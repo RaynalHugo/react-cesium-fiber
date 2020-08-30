@@ -1,6 +1,6 @@
 import { upperFirst } from "lodash/fp";
 import * as Cesium from "cesium";
-import { error004, error005 } from "../errors";
+import { error004, error005 } from "../utils/errors";
 import { isFunction, isNil } from "lodash/fp";
 
 import { updateCesiumObject } from "../utils/update-cesium-object";
