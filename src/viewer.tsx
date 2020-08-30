@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { useRef, useLayoutEffect, useState } from "react";
 import { Viewer as CesiumViewer } from "cesium";
 import { render } from "./reconciler";
@@ -7,7 +6,7 @@ import { ViewerProvider, useViewer } from "./context";
 
 import { ReactCesiumFiber } from "./types";
 
-const defaultArgs = [];
+const defaultArgs = [{}] as [ConstructorParameters<typeof CesiumViewer>[1]];
 const defaultStyle = {};
 
 // forward ref ?
@@ -27,9 +26,8 @@ export const Viewer = ({
 
   useLayoutEffect(() => {
     if (containerRef.current) {
-      const props = { args: [containerRef.current, ...args], ...viewerProps };
       const wrapped = (
-        <viewer {...props}>
+        <viewer args={[containerRef.current, ...args]} {...viewerProps}>
           <ViewerProvider value={viewer}>{children}</ViewerProvider>
         </viewer>
       );

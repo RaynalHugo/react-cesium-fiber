@@ -72,6 +72,7 @@
     "rollup-plugin-commonjs": "10.1.0",
     "rollup-plugin-node-resolve": "5.2.0",
     "ts-jest": "26.3.0",
+    "ts-node": "9.0.0",
     "typescript": "3.9.7",
     "webpack": "4.44.0"
   },
@@ -81,6 +82,7 @@
     "build:types": "tsc --emitDeclarationOnly",
     "build": "yarn build:lib && yarn build:types",
     "storybook": "source ./.env; start-storybook -p 9009 -s ./public;",
+    "generate:types": "ts-node ./src/utils/generate-types.ts",
     "test": "jest"
   },
   "browserslist": [
