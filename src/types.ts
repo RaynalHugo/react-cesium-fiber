@@ -44,6 +44,7 @@ export declare namespace ReactCesiumFiber {
           container: Container,
           child: Child
         ) => (container: Container, child: Child) => void);
+    onUpdate?: (...args: any[]) => void;
     children?: React.ReactNode;
     ref?: React.Ref<React.ReactNode>;
     key?: React.Key;

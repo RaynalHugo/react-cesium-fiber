@@ -37,6 +37,14 @@ ${join(
 
 // We don't want to test those functions
 /* istanbul ignore next */
+/**
+ * This functions generates a file containing 2 mappings necessary in order to
+ * have proper typing of react-cesium-fiber elements.
+ *
+ * It needs to be updated on every release of CesiumJs.
+ * Maybe we should put those types in a different package in order to avoid tying
+ * react-cesium-fiber releases with cesium ones.
+ */
 export const generateTypes = () =>
   writeFileSync(
     "./src/generated-mapping.ts",

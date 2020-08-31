@@ -14,6 +14,7 @@ export type Type = string;
 
 export type Props = PropsWithChildren<{
   args?: any[];
+  attach?: Attach;
   onUpdate?: any;
   constructFrom: string;
   [key: string]: any;
