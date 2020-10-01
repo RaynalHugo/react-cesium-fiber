@@ -1,4 +1,4 @@
-import React, { useRef, useLayoutEffect, useState } from "react";
+import React, { useRef, useLayoutEffect, useState, forwardRef } from "react";
 import { Viewer as CesiumViewer } from "cesium";
 import { render } from "./reconciler";
 
@@ -10,18 +10,30 @@ const defaultArgs = [{}] as [ConstructorParameters<typeof CesiumViewer>[1]];
 const defaultStyle = {};
 
 // forward ref ?
-export const Viewer = ({
-  children,
-  args = defaultArgs,
-  style = defaultStyle,
-  ...viewerProps
-}: ReactCesiumFiber.Component<
-  CesiumViewer,
-  [ConstructorParameters<typeof CesiumViewer>[1]]
-> & {
-  style?: React.CSSProperties;
-}): React.ReactElement => {
+export const Viewer = forwardRef(function ViewerWithoutRef(
+  {
+    children,
+    args = defaultArgs,
+    style = defaultStyle,
+    className,
+    ...viewerProps
+  }: ReactCesiumFiber.Component<
+    CesiumViewer,
+    [ConstructorParameters<typeof CesiumViewer>[1]]
+  > & {
+    style?: React.CSSProperties;
+    className?: string;
+  },
+  ref
+): React.ReactElement {
   const containerRef = useRef<HTMLDivElement>(null);
+  if (ref) {
+    if ("current" in ref) {
+      ref.current = containerRef.current;
+    } else if (typeof ref === "function") {
+      ref(containerRef.current);
+    }
+  }
   const [viewer, setViewer] = useState(null);
 
   useLayoutEffect(() => {
@@ -39,7 +51,7 @@ export const Viewer = ({
     }
   }, [children, containerRef.current, viewer]);
 
-  return <div style={style} ref={containerRef}></div>;
-};
+  return <div style={style} ref={containerRef} className={className}></div>;
+});
 
 export { useViewer };
