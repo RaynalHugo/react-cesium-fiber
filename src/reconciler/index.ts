@@ -7,6 +7,7 @@ import { finalizeInitialChildren } from "./finalize-initial-children";
 import { getChildHostContext } from "./get-child-host-context";
 import { getPublicInstance } from "./get-public-instance";
 import { getRootHostContext } from "./get-root-host-context";
+import { insertBefore } from "./insert-before";
 import { prepareUpdate } from "./prepare-update";
 import { removeChild } from "./remove-child";
 import { shouldSetTextContent } from "./should-set-text-content";
@@ -51,6 +52,8 @@ const reconciler = ReactReconciler<
   getChildHostContext,
   getPublicInstance,
   getRootHostContext,
+  insertBefore,
+  insertInContainerBefore: insertBefore,
   prepareUpdate,
   removeChild,
   shouldSetTextContent,
