@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.3.0
+
+_Fixes for production._
+
+- Removed the postinstall script preventing installation of the package.
+- Add missing method (`insertBefore`) in the reconciler.
+- Possibility to pass `ref` and `className` props to the `Viewer` component.
+
 ## v0.2.0
 
 _Small enhancements to improve developer experience._
